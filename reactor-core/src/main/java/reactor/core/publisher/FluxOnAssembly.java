@@ -68,6 +68,7 @@ final class FluxOnAssembly<T> extends FluxOperator<T, T> implements Fuseable,
 	@Override
 	public Object scanUnsafe(Attr key) {
 		if (key == Attr.ACTUAL_METADATA) return !snapshotStack.checkpointed;
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
 
 		return super.scanUnsafe(key);
 	}
@@ -332,6 +333,7 @@ final class FluxOnAssembly<T> extends FluxOperator<T, T> implements Fuseable,
 		public Object scanUnsafe(Attr key) {
 			if (key == Attr.PARENT) return s;
 			if (key == Attr.ACTUAL_METADATA) return !snapshotStack.checkpointed;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
 
 			return InnerOperator.super.scanUnsafe(key);
 		}

@@ -76,6 +76,12 @@ final class FluxSubscribeOn<T> extends FluxOperator<T, T> {
 		}
 	}
 
+	@Override
+	public Object scanUnsafe(Attr key) {
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.ASYNC;
+		return super.scanUnsafe(key);
+	}
+
 	static final class SubscribeOnSubscriber<T>
 			implements InnerOperator<T, T>, Runnable {
 
@@ -212,6 +218,7 @@ final class FluxSubscribeOn<T> extends FluxOperator<T, T> {
 			if (key == Attr.PARENT) return s;
 			if (key == Attr.CANCELLED) return s == Operators.cancelledSubscription();
 			if (key == Attr.REQUESTED_FROM_DOWNSTREAM) return requested;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.ASYNC;
 
 			return InnerOperator.super.scanUnsafe(key);
 		}

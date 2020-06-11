@@ -87,6 +87,12 @@ final class FluxWindowWhen<T, U, V> extends FluxOperator<T, Flux<T>> {
 		}
 	}
 
+	@Override
+	public Object scanUnsafe(Attr key) {
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
+		return super.scanUnsafe(key);
+	}
+
 	static final class WindowWhenMainSubscriber<T, U, V>
 			extends QueueDrainSubscriber<T, Object, Flux<T>> {
 
@@ -327,6 +333,12 @@ final class FluxWindowWhen<T, U, V> extends FluxOperator<T, Flux<T>> {
 			if (enter()) {
 				drainLoop();
 			}
+		}
+
+		@Override
+		public Object scanUnsafe(Attr key) {
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
+			return super.scanUnsafe(key);
 		}
 	}
 

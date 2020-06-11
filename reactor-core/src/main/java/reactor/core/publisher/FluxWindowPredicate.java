@@ -101,6 +101,12 @@ final class FluxWindowPredicate<T> extends FluxOperator<T, Flux<T>>
 		return prefetch;
 	}
 
+	@Override
+	public Object scanUnsafe(Attr key) {
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
+		return super.scanUnsafe(key);
+	}
+
 	static final class WindowPredicateMain<T>
 			implements Fuseable.QueueSubscription<Flux<T>>,
 			           InnerOperator<T, Flux<T>> {
@@ -300,6 +306,7 @@ final class FluxWindowPredicate<T> extends FluxOperator<T, Flux<T>>
 			if (key == Attr.BUFFERED) return queue.size();
 			if (key == Attr.ERROR) return error;
 			if (key == Attr.REQUESTED_FROM_DOWNSTREAM) return requested;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
 
 			return InnerOperator.super.scanUnsafe(key);
 		}
@@ -882,6 +889,7 @@ final class FluxWindowPredicate<T> extends FluxOperator<T, Flux<T>>
 			if (key == Attr.BUFFERED) return queue == null ? 0 : queue.size();
 			if (key == Attr.ERROR) return error;
 			if (key == Attr.REQUESTED_FROM_DOWNSTREAM) return requested;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
 
 			return InnerOperator.super.scanUnsafe(key);
 		}

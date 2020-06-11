@@ -78,6 +78,12 @@ final class FluxZipIterable<T, U, R> extends FluxOperator<T, R> {
 		source.subscribe(new ZipSubscriber<>(actual, it, zipper));
 	}
 
+	@Override
+	public Object scanUnsafe(Attr key) {
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
+		return super.scanUnsafe(key);
+	}
+
 	static final class ZipSubscriber<T, U, R>
 			implements InnerOperator<T, R> {
 
@@ -104,6 +110,7 @@ final class FluxZipIterable<T, U, R> extends FluxOperator<T, R> {
 		public Object scanUnsafe(Attr key) {
 			if (key == Attr.TERMINATED) return done;
 			if (key == Attr.PARENT) return s;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.SYNC;
 
 			return InnerOperator.super.scanUnsafe(key);
 		}

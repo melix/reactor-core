@@ -66,7 +66,7 @@ final class FluxWindowTimeout<T> extends FluxOperator<T, Flux<T>> {
 	@Override
 	public Object scanUnsafe(Attr key) {
 		if (key == Attr.RUN_ON) return timer;
-		if (key == Attr.THREAD_MODIFIER) return true;
+		if (key == Attr.RUN_STYLE) return Attr.RunStyle.ASYNC;
 
 		return super.scanUnsafe(key);
 	}
@@ -142,7 +142,8 @@ final class FluxWindowTimeout<T> extends FluxOperator<T, Flux<T>> {
 			if (key == Attr.CAPACITY) return maxSize;
 			if (key == Attr.BUFFERED) return queue.size();
 			if (key == Attr.RUN_ON) return worker;
-			if (key == Attr.THREAD_MODIFIER) return true;
+			if (key == Attr.RUN_STYLE) return Attr.RunStyle.ASYNC;
+
 			return InnerOperator.super.scanUnsafe(key);
 		}
 
